@@ -24,13 +24,9 @@ return new class extends Migration
                 ->constrained('rifas')
                 ->cascadeOnDelete();
 
-            $table->string('titulo');
+            $table->string('numero_selecionado');
 
-            $table->string('status_transacao')->default('pendente');
-
-            $table->float('valor', 10, 2);
-
-            $table->text('descricao')->nullable();
+            $table->string('status_transacao')->default('pendente'); // Aguardando Pgto; Pago; Falhou;
 
             $table->timestamps();
         });

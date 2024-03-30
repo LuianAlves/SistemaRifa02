@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rifa;
+use App\Models\TransacaoRifa;
 
 class IndexController extends Controller
 {
@@ -11,7 +12,9 @@ class IndexController extends Controller
     {
         $rifas = Rifa::get();
 
-        return view('home.index', compact('rifas'));
+        $transacoes = TransacaoRifa::get();
+
+        return view('home.index', compact('rifas', 'transacoes'));
     }
 
     public function view($rifa_id)

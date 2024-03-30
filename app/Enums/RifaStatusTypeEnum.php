@@ -6,5 +6,5 @@ enum RifaStatusTypeEnum: string
 {
     case ABERTO = 'aberto';
     case ANDAMENTO = 'andamento';
-    case FINALIZADO = 'finalizado';
+    case FINALIZADO = 'finalizada';
 }

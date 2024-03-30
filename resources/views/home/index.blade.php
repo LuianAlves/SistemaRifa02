@@ -105,7 +105,6 @@
                 <div class="swiper-pagination"></div>
             </div>
 
-
             <!-- Campanhas: Carousel rifa -->
             <div class="row mt-5">
                 <div class="col-md-12">
@@ -125,10 +124,44 @@
             <div id="property-carousel" class="swiper">
                 <div class="swiper-wrapper">
                     @foreach($rifas as $rifa)
+
+                        @php
+                            $numeros_selecionados = [];
+
+                            foreach ($transacoes as $transacao) {
+                                if ($transacao->rifa_id == $rifa->id) {
+                                    $numeros = explode(",", $transacao->numero_selecionado);
+                                    $numeros_selecionados = array_merge($numeros_selecionados, $numeros);
+                                }
+                            }
+
+                            $total_numeros = count($numeros_selecionados);
+                            $numeros_restantes = $rifa->limite_numeros - $total_numeros;
+
+                            $status = $rifa->status->value;
+
+                            $bg = "";
+
+                            if($status === "aberto") {
+                                $btnRifa = "EM BREVE";
+                                $valor = $rifa->valor;
+                                $status = "EM BREVE";
+                                $bg = "bg-warning";
+                            } else if ($status === "andamento") {
+                                $btnRifa = "PARTICIPAR";
+                                $valor = $rifa->valor;
+                            } else {
+                                $btnRifa = "FINALIZADO";
+                                $valor = $rifa->valor;
+                                $bg = "bg-danger";
+                            }
+                        @endphp
+
                         <div class="carousel-item-b swiper-slide">
                             <div class="card-box-a card-shadow">
                                 <div class="img-box-a">
-                                    <img src="{{'storage/'.$rifa->imagem}}" style="height: 350px;" class="img-a img-fluid">
+                                    <img src="{{'storage/'.$rifa->imagem}}" style="height: 350px;"
+                                         class="img-a img-fluid">
                                 </div>
                                 <div class="card-overlay">
                                     <div class="card-overlay-a-content">
@@ -139,9 +172,11 @@
                                         </div>
                                         <div class="card-body-a">
                                             <div class="price-box d-flex">
-                                                <span class="price-a mt-2">{{ $rifa->status == 'aberto' ? "Disponível" : "Finalizada" }} | R$ {{$rifa->valor}}</span>
+                                                <span class="price-a mt-2">{{ $status }} | R$ {{$valor}}</span>
                                             </div>
-                                            <a href="{{route('filament.app.resources.transacao-rifas.create', $rifa->id)}}" class="btn btn-b-n my-3">PARTICIPAR</a>
+                                            <a href="{{route('filament.app.resources.transacao-rifas.create', $rifa->id)}}" class="btn btn-b-n my-3 {{$bg}}">
+                                                {{$btnRifa}}
+                                            </a>
                                         </div>
                                         <div class="card-footer-a">
                                             <ul class="card-info d-flex justify-content-around text-center">
@@ -150,8 +185,8 @@
                                                     <span>{{$rifa->limite_numeros}}</span>
                                                 </li>
                                                 <li>
-                                                    <h4 class="card-info-title">Núm Restantes</h4>
-                                                    <span>21</span>
+                                                    <h4 class="card-info-title">Número Restantes</h4>
+                                                    <span>{{$numeros_restantes}}</span>
                                                 </li>
                                                 <li>
                                                     <h4 class="card-info-title">Sorteio</h4>

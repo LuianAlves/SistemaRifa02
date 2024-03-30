@@ -7,12 +7,18 @@ use App\Filament\App\Resources\TransacaoRifaResource\RelationManagers;
 use App\Filament\Forms\Components\PtbrMoney;
 use App\Models\Rifa;
 use App\Models\TransacaoRifa;
-use Filament\Forms;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class TransacaoRifaResource extends Resource
 {
@@ -22,16 +28,16 @@ class TransacaoRifaResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $rifaId = request()->route('rifa_id');
-        $rifa = Rifa::findOrFail($rifaId);
+//        $rifaId = ;
+//        $rifa = Rifa::findOrFail($rifaId);
 
 //        dd($rifa);
         return $form
             ->schema([
-                Forms\Components\Section::make()
+                Section::make()
                     ->schema([
                         Wizard::make([
-                            Wizard\Step::make('Campanha')
+                            Step::make('Campanha')
                                 ->schema([
                                     // user_id
                                     // rifa_id
@@ -40,13 +46,13 @@ class TransacaoRifaResource extends Resource
                                     // valor OK
                                     // descricao OK
 
-                                    Forms\Components\TextInput::make('titulo')
+                                    TextInput::make('titulo')
                                         ->label('Campanha')
                                         ->disabled()
-                                        ->required()
-                                        ->default($rifa->titulo),
+                                        ->required(),
+//                                        ->default($rifa->titulo),
 
-//                                    Forms\Components\TextInput::make('status_transacao')
+//                                    TextInput::make('status_transacao')
 //                                        ->disabled()
 //                                        ->required()
 //                                        ->maxLength(191)
@@ -56,23 +62,39 @@ class TransacaoRifaResource extends Resource
                                         ->label('Valor da Rifa')
                                         ->disabled()
                                         ->required()
-                                        ->prefix('R$ ')
-                                        ->default($rifa->valor),
+                                        ->prefix('R$ '),
+//                                        ->default($rifa->valor),
 
-                                    Forms\Components\Textarea::make('descricao')
+                                    Textarea::make('descricao')
                                         ->label('Descrição')
                                         ->disabled()
-                                        ->rows(10)
-                                        ->default($rifa->descricao),
+                                        ->rows(10),
+//                                        ->default($rifa->descricao),
 
+//                                    Section::make()
+//                                        ->schema([
+//                                            ViewField::make('transacao')
+//                                                ->label('Campanha')
+//                                                ->view('home.transacao-rifa.transacao')
+//                                        ])
+                                    Section::make()
+                                        ->schema([
+                                            Placeholder::make('sale_resume')
+                                                ->label('Selecionar Número')
+                                                ->content(function ($get) {
+                                                    return new HtmlString(
+                                                        view('home.transacao-rifa.transacao', ['rifa' => Rifa::where('id', request()->route('rifa_id'))->first()])->render()
+                                                    );
+                                                }),
+                                        ])
                                 ])->columns(3),
 
-                            Wizard\Step::make('Escolher Números')
+                            Step::make('Escolher Números')
                                 ->schema([
                                     // ...
                                 ]),
 
-                            Wizard\Step::make('Pagamento')
+                            Step::make('Pagamento')
                                 ->schema([
                                     // ...
                                 ]),
