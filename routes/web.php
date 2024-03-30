@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TransacaoRifa\NumerosTemporarioController;
 use App\Http\Controllers\App\IndexController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ Route::fallback(function () {
 });
 
 
-//Route::get('/app/transacao-rifas/create/{rifa_id}', [IndexController::class, 'view'])->name('filament.pages.app.transacao-rifa.create-id');
+Route::post('/numeros-temporarios/store', [NumerosTemporarioController::class, 'store'])->name('numero-temporario.store');
 
 /*
 

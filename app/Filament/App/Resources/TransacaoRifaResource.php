@@ -4,21 +4,11 @@ namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\TransacaoRifaResource\Pages;
 use App\Filament\App\Resources\TransacaoRifaResource\RelationManagers;
-use App\Filament\Forms\Components\PtbrMoney;
-use App\Models\Rifa;
 use App\Models\TransacaoRifa;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ViewField;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 
 class TransacaoRifaResource extends Resource
 {
@@ -28,43 +18,9 @@ class TransacaoRifaResource extends Resource
 
     public static function form(Form $form): Form
     {
-//        $rifaId = ;
-//        $rifa = Rifa::findOrFail($rifaId);
-
-//        dd($rifa);
         return $form
             ->schema([
-                Section::make()
-                    ->schema([
-                        Wizard::make([
-                            Step::make('Selecionar Número')
-                                ->schema([
-                                    Section::make()
-                                        ->schema([
-                                            Placeholder::make('Legendas')
-                                                ->label('')
-                                                ->content(function ($get) {
-                                                    return new HtmlString(
-                                                        view('home.transacao-rifa.legendas')->render()
-                                                    );
-                                                }),
 
-                                            Placeholder::make('numeros_rifa')
-                                                ->label('Selecionar Número')
-                                                ->content(function ($get) {
-                                                    return new HtmlString(
-                                                        view('home.transacao-rifa.tabela_numeros', ['rifa' => Rifa::where('id', request()->route('rifa_id'))->first()])->render()
-                                                    );
-                                                }),
-                                        ])
-                                ])->columns(3),
-
-                            Step::make('Pagamento')
-                                ->schema([
-                                    // ...
-                                ]),
-                        ])
-                    ]),
             ]);
     }
 
