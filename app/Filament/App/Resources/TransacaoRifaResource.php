@@ -37,62 +37,27 @@ class TransacaoRifaResource extends Resource
                 Section::make()
                     ->schema([
                         Wizard::make([
-                            Step::make('Campanha')
+                            Step::make('Selecionar Número')
                                 ->schema([
-                                    // user_id
-                                    // rifa_id
-                                    // titulo OK
-                                    // status transacao
-                                    // valor OK
-                                    // descricao OK
-
-                                    TextInput::make('titulo')
-                                        ->label('Campanha')
-                                        ->disabled()
-                                        ->required(),
-//                                        ->default($rifa->titulo),
-
-//                                    TextInput::make('status_transacao')
-//                                        ->disabled()
-//                                        ->required()
-//                                        ->maxLength(191)
-//                                        ->default(),
-
-                                    PtbrMoney::make('valor')
-                                        ->label('Valor da Rifa')
-                                        ->disabled()
-                                        ->required()
-                                        ->prefix('R$ '),
-//                                        ->default($rifa->valor),
-
-                                    Textarea::make('descricao')
-                                        ->label('Descrição')
-                                        ->disabled()
-                                        ->rows(10),
-//                                        ->default($rifa->descricao),
-
-//                                    Section::make()
-//                                        ->schema([
-//                                            ViewField::make('transacao')
-//                                                ->label('Campanha')
-//                                                ->view('home.transacao-rifa.transacao')
-//                                        ])
                                     Section::make()
                                         ->schema([
-                                            Placeholder::make('sale_resume')
+                                            Placeholder::make('Legendas')
+                                                ->label('')
+                                                ->content(function ($get) {
+                                                    return new HtmlString(
+                                                        view('home.transacao-rifa.legendas')->render()
+                                                    );
+                                                }),
+
+                                            Placeholder::make('numeros_rifa')
                                                 ->label('Selecionar Número')
                                                 ->content(function ($get) {
                                                     return new HtmlString(
-                                                        view('home.transacao-rifa.transacao', ['rifa' => Rifa::where('id', request()->route('rifa_id'))->first()])->render()
+                                                        view('home.transacao-rifa.tabela_numeros', ['rifa' => Rifa::where('id', request()->route('rifa_id'))->first()])->render()
                                                     );
                                                 }),
                                         ])
                                 ])->columns(3),
-
-                            Step::make('Escolher Números')
-                                ->schema([
-                                    // ...
-                                ]),
 
                             Step::make('Pagamento')
                                 ->schema([
@@ -155,40 +120,3 @@ class TransacaoRifaResource extends Resource
         ];
     }
 }
-
-//Wizard::make([
-//    Wizard\Step::make('Order')
-//        ->schema([
-//
-//            // user_id
-//            // rifa_id
-//
-//            Forms\Components\TextInput::make('titulo')
-//                ->disabled()
-//                ->required()
-//                ->default($rifa->titulo),
-//
-//            Forms\Components\TextInput::make('status')
-//                ->disabled()
-//                ->required()
-//                ->maxLength(191)
-//                ->default($rifa->status),
-//
-//            Forms\Components\TextInput::make('valor')
-//                ->disabled()
-//                ->required()
-//                ->prefix('R$ ')
-//                ->default($rifa->valor),
-//        ]),
-//    Wizard\Step::make('Delivery')
-//        ->schema([
-//            Forms\Components\Textarea::make('descricao')
-//                ->disabled()
-//                ->rows(10)
-//                ->default($rifa->descricao),
-//        ]),
-//    Wizard\Step::make('Billing')
-//        ->schema([
-//            // ...
-//        ]),
-//])
